@@ -4,6 +4,84 @@ info:
   title: Care for Me APIs
   description: Care for Me APIs spec
 paths:
+  '/user':
+    post:
+      operationId: saveUser
+      tags:
+        - user
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+
+      responses:
+        '201':
+          description: post saved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  '/user/{userId}':
+
+    put:
+      operationId: editUser
+      tags:
+        - user
+      parameters:
+        - name: userId
+          in: path
+          description: user id
+          required: true
+          schema:
+            type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+
+      responses:
+        '201':
+          description: post saved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   '/post':
     get:
       operationId: getAllPosts
@@ -173,6 +251,43 @@ paths:
 
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  '/posts/user/{userId}':
+    get:
+      operationId: getPostsByUser
+      tags:
+        - post
+      parameters:
+        - name: userId
+          in: path
+          description: user id
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: A successful response with all posts related to user
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/Post'
+
+        '204':
+          description: No matching Post found
           content:
             application/json:
               schema:
