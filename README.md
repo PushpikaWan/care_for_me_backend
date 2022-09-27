@@ -48,3 +48,7 @@ For more information about using Node.js on Heroku, see these Dev Center article
   - git push heroku main
   - heroku ps:scale web=1     -> to make sure at lease one instance running
   - heroku open
+
+## generate code from swagger
+snc swagger.yaml -o ./care-for-me-apis
+then check new changes and add those into relevant folder in roots and delete whole generated code

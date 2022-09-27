@@ -13,9 +13,15 @@ app.use(
 );
 app.use(bodyParser.json());
 
-app.use('/books', require('./routes/books'));
-app.use('/api-docs', swaggerUi.serve,
-    swaggerUi.setup(swaggerDocument, {explorer: true}));
-
 app.listen(PORT);
 console.debug('Server listening on port: ' + PORT);
+
+
+/*
+ * Routes
+ */
+app.use('/user', require('./routes/user'));
+app.use('/post', require('./routes/post'));
+app.use('/posts', require('./routes/posts'));
+app.use('/books', require('./routes/books'));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {explorer: true}));

@@ -15,6 +15,7 @@
     "ejs": "^3.1.5",
     "express": "^4.15.2",
     "swagger-jsdoc": "^6.2.5",
+    "swagger-node-codegen": "^1.6.3",
     "swagger-ui-express": "^4.5.0",
     "yamljs": "^0.3.0"
   },
