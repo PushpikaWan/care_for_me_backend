@@ -1,4 +1,6 @@
 const dbConfig = require('../db/db-config');
+const ServerError = require(
+    "swagger-node-codegen/templates/express-server/src/lib/error");
 
 /**
  * @param {Object} options
@@ -6,34 +8,23 @@ const dbConfig = require('../db/db-config');
  * @return {Promise}
  */
 module.exports.saveUser = async (options) => {
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
-
+//todo need common validator to all post, update, delete..
   try {
     let db = await dbConfig.getDB();
-
+    const user = db.collection('UserData');
+    await user.insertOne(options.body);
+    console.log('users', options.body);
+    return {
+      status: 200,
+      data: options.body
+    };
   } catch (e) {
-    console.error("user data fetching failed", e);
+    console.error("user data saving failed", e);
+    throw new ServerError({
+      status: 500,
+      error: e.message()
+    });
   }
-
-  return {
-    status: 200,
-    data: 'saveUser ok!'
-  };
 };
 
 /**
@@ -43,23 +34,6 @@ module.exports.saveUser = async (options) => {
  * @return {Promise}
  */
 module.exports.editUser = async (options) => {
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
-
   return {
     status: 200,
     data: 'editUser ok!'
