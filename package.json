@@ -11,8 +11,12 @@
     "test": "node test.js"
   },
   "dependencies": {
+    "body-parser": "^1.20.0",
     "ejs": "^3.1.5",
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "swagger-jsdoc": "^6.2.5",
+    "swagger-ui-express": "^4.5.0",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "got": "^11.3.0",
