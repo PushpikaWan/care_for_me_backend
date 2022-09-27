@@ -1,3 +1,5 @@
+const dbConfig = require('../db/db-config');
+
 /**
  * @param {Object} options
  * @throws {Error}
@@ -20,6 +22,13 @@ module.exports.saveUser = async (options) => {
   //   status: 500, // Or another error code.
   //   error: 'Server Error' // Or another error message.
   // });
+
+  try {
+    let db = await dbConfig.getDB();
+
+  } catch (e) {
+    console.error("user data fetching failed", e);
+  }
 
   return {
     status: 200,
