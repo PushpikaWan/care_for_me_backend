@@ -4,9 +4,267 @@ info:
   title: Care for Me APIs
   description: Care for Me APIs spec
 paths:
-  /list:
+  '/post':
     get:
-      description: Returns a list of stuff
+      operationId: getAllPosts
+      tags:
+        - post
+
       responses:
         '200':
-          description: Successful response
+          description: A successful response with all posts
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/Post'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+
+    post:
+      operationId: savePost
+      tags:
+        - post
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+
+      responses:
+        '201':
+          description: post saved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  '/posts/{postId}':
+    get:
+      operationId: getPost
+      tags:
+        - post
+      parameters:
+        - name: postId
+          in: path
+          description: post id
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: A successful response with post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+
+        '204':
+          description: No matching Post found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      operationId: updatePost
+      tags:
+        - post
+      parameters:
+        - name: postId
+          in: path
+          description: post id
+          required: true
+          schema:
+            type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+
+      responses:
+        '201':
+          description: Post updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+
+        '204':
+          description: No matching Post found for given data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      operationId: deletePost
+      tags:
+        - post
+      parameters:
+        - name: postId
+          in: path
+          description: post id
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '201':
+          description: Post deleted successfully
+          content:
+            application/json:
+              schema:
+                type: string
+
+        '204':
+          description: No matching Post found for given data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+components:
+  schemas:
+    Post:
+      type: "object"
+      required:
+        - postId
+        - imageUrl
+        - animalType
+        - animalNeed
+        - district
+        - addressText
+        - locationLink
+        - description
+        - postedBy
+        - postedAt
+      properties:
+        postId:
+          type: string
+        imageUrl:
+          type: string
+        animalType:
+          type: string
+        animalNeed:
+          type: string
+        district:
+          type: string
+        addressText:
+          type: string
+        locationLink:
+          type: string
+        description:
+          type: string
+        postedBy:
+          $ref: "#/components/schemas/User"
+        postedAt:
+          type: string
+        Comments:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Comment"
+
+    User:
+      type: "object"
+      required:
+        - id
+        - name
+        - imageUrl
+        - modifiedAt
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        imageUrl:
+          type: string
+        modifiedAt:
+          type: string
+
+    Comment:
+      type: "object"
+      required:
+        - userId
+        - text
+        - postedAt
+      properties:
+        userId:
+          type: string
+        text:
+          type: string
+        postedAt:
+          type: string
+
+    ErrorResponse:
+      type: "object"
+      required:
+        - statusCode
+        - errorText
+      properties:
+        statusCode:
+          type: string
+        errorText:
+          type: string
