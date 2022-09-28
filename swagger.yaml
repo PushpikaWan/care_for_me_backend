@@ -263,6 +263,183 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+
+  '/posts/{postId}/comment':
+
+    post:
+      operationId: addComment
+      tags:
+        - post
+      parameters:
+        - name: postId
+          in: path
+          description: post id
+          required: true
+          schema:
+            type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+
+      responses:
+        '201':
+          description: Comment added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      operationId: deleteComment
+      tags:
+        - post
+      parameters:
+        - name: postId
+          in: path
+          description: post id
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '201':
+          description: Comment deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+
+        '204':
+          description: No matching Post found for given data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  '/posts/{postId}/report':
+
+    post:
+      operationId: reportPost
+      tags:
+        - post
+      parameters:
+        - name: postId
+          in: path
+          description: post id
+          required: true
+          schema:
+            type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Report'
+
+      responses:
+        '201':
+          description: Report added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  '/posts/{postId}/comment/{commentId}/report':
+
+    post:
+      operationId: reportComment
+      tags:
+        - post
+      parameters:
+        - name: postId
+          in: path
+          description: post id
+          required: true
+          schema:
+            type: string
+        - name: commentId
+          in: path
+          description: comment id
+          required: true
+          schema:
+            type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Report'
+
+      responses:
+        '201':
+          description: Report added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   '/posts/user/{userId}':
     get:
       operationId: getPostsByUser
@@ -314,7 +491,7 @@ components:
         - addressText
         - locationLink
         - description
-        - postedBy
+        - userId
         - postedAt
       properties:
         postId:
@@ -333,14 +510,18 @@ components:
           type: string
         description:
           type: string
-        postedBy:
-          $ref: "#/components/schemas/User"
+        userId:
+          type: string
         postedAt:
           type: string
         Comments:
           type: "array"
           items:
             $ref: "#/components/schemas/Comment"
+        reports:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Report"
 
     User:
       type: "object"
@@ -372,6 +553,10 @@ components:
           type: string
         postedAt:
           type: string
+        reports:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Report"
 
     ErrorResponse:
       type: "object"
@@ -382,4 +567,19 @@ components:
         statusCode:
           type: string
         errorText:
+          type: string
+
+
+    Report:
+      type: "object"
+      required:
+        - reason
+        - reportedByUserId
+        - reportedAt
+      properties:
+        reason:
+          type: string
+        reportedByUserId:
+          type: string
+        reportedAt:
           type: string
