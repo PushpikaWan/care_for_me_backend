@@ -5,7 +5,7 @@ const router = new express.Router();
 
 
 /**
- * 
+ *
  */
 router.get('/:postId', async (req, res, next) => {
   const options = {
@@ -21,7 +21,7 @@ router.get('/:postId', async (req, res, next) => {
 });
 
 /**
- * 
+ *
  */
 router.put('/:postId', async (req, res, next) => {
   const options = {
@@ -38,7 +38,7 @@ router.put('/:postId', async (req, res, next) => {
 });
 
 /**
- * 
+ *
  */
 router.delete('/:postId', async (req, res, next) => {
   const options = {
@@ -54,7 +54,76 @@ router.delete('/:postId', async (req, res, next) => {
 });
 
 /**
- * 
+ *
+ */
+router.post('/:postId/comment', async (req, res, next) => {
+  const options = {
+    body: req.body,
+    postId: req.params['postId']
+  };
+
+  try {
+    const result = await posts.addComment(options);
+    res.status(result.status || 200).send(result.data);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ *
+ */
+router.delete('/:postId/comment/:commentId', async (req, res, next) => {
+  const options = {
+    postId: req.params['postId'],
+    commentId: req.params['commentId']
+  };
+
+  try {
+    const result = await posts.deleteComment(options);
+    res.status(result.status || 200).send(result.data);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ *
+ */
+router.post('/:postId/report', async (req, res, next) => {
+  const options = {
+    body: req.body,
+    postId: req.params['postId']
+  };
+
+  try {
+    const result = await posts.reportPost(options);
+    res.status(result.status || 200).send(result.data);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ *
+ */
+router.post('/:postId/comment/:commentId/report', async (req, res, next) => {
+  const options = {
+    body: req.body,
+    postId: req.params['postId'],
+    commentId: req.params['commentId']
+  };
+
+  try {
+    const result = await posts.reportComment(options);
+    res.status(result.status || 200).send(result.data);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ *
  */
 router.get('/user/:userId', async (req, res, next) => {
   const options = {

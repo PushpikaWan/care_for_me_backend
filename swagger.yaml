@@ -319,6 +319,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  '/posts/{postId}/comment/{commentId}':
     delete:
       operationId: deleteComment
       tags:
@@ -327,6 +328,12 @@ paths:
         - name: postId
           in: path
           description: post id
+          required: true
+          schema:
+            type: string
+        - name: commentId
+          in: path
+          description: comment id
           required: true
           schema:
             type: string
