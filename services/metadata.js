@@ -1,5 +1,7 @@
 const common = require("../util/common");
-const dbConfig = require("../db/db-config");
+const {getPostCollection} = require("../db/db-config");
+const {STATE_ACTIVE} = require("../util/constants");
+
 /**
  * @param {Object} options
  * @param {String} options.userId User Id
@@ -8,11 +10,11 @@ const dbConfig = require("../db/db-config");
  */
 module.exports.getUserPostMetaData = async (options) => {
   try {
-    let db = await dbConfig.getDB();
-    const posts = await db.collection('Post');
-    const ownedPostCount = await posts.countDocuments({userId: options.userId});
-    const interactedPostCount = await posts.countDocuments(
-        {'comments.userId': options.userId});
+    const postCollection = await getPostCollection();
+    const ownedPostCount = await postCollection.countDocuments(
+        {userId: options.userId, status: STATE_ACTIVE});
+    const interactedPostCount = await postCollection.countDocuments(
+        {'comments.userId': options.userId, status: STATE_ACTIVE});
     return {
       status: 200,
       data: {ownedPostCount, interactedPostCount}

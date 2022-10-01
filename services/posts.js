@@ -1,11 +1,7 @@
-const dbConfig = require("../db/db-config");
+const {getPostCursor, getPostCollection} = require("../db/db-config");
 const common = require("../util/common");
 const {ObjectId} = require("mongodb");
-
-async function getCollection() {
-  let db = await dbConfig.getDB();
-  return db.collection('Post');
-}
+const {STATE_ACTIVE} = require("../util/constants");
 
 /**
  * @param {Object} options
@@ -15,9 +11,9 @@ async function getCollection() {
  */
 module.exports.getPost = async (options) => {
   try {
-    const postCollection = await getCollection();
-    const post = await postCollection
-    .findOne({_id: new ObjectId(options.postId)});
+    let postCollection = await getPostCollection();
+    const post = await postCollection.findOne(
+        {_id: new ObjectId(options.postId), 'status': STATE_ACTIVE});
     return {
       status: 200,
       data: post
@@ -36,7 +32,7 @@ module.exports.getPost = async (options) => {
 module.exports.updatePost = async (options) => {
 
   try {
-    const post = await getCollection();
+    let postCollection = await getPostCollection();
     let body = options.body;
     const filter = {_id: new ObjectId(options.postId)};
     const updatingDoc = {
@@ -51,7 +47,7 @@ module.exports.updatePost = async (options) => {
         "description": body.description,
       })
     }
-    let updateResult = await post.updateOne(filter, updatingDoc);
+    let updateResult = await postCollection.updateOne(filter, updatingDoc);
     return {
       status: 200,
       data: updateResult
@@ -69,10 +65,10 @@ module.exports.updatePost = async (options) => {
  */
 module.exports.deletePost = async (options) => {
   try {
-    const post = await getCollection();
+    const postCollection = await getPostCollection();
     const filter = {_id: new ObjectId(options.postId)};
 
-    let deleteResult = await post.deleteOne(filter);
+    let deleteResult = await postCollection.deleteOne(filter);
     return {
       status: 200,
       data: deleteResult
@@ -90,7 +86,7 @@ module.exports.deletePost = async (options) => {
  */
 module.exports.addComment = async (options) => {
   try {
-    const post = await getCollection();
+    const postCollection = await getPostCollection();
     let comment = options.body;
     const filter = {_id: new ObjectId(options.postId)};
     const updatingDoc = {
@@ -101,7 +97,7 @@ module.exports.addComment = async (options) => {
         })
       }
     }
-    let updateResult = await post.updateOne(filter, updatingDoc);
+    let updateResult = await postCollection.updateOne(filter, updatingDoc);
     return {
       status: 200,
       data: updateResult
@@ -119,14 +115,14 @@ module.exports.addComment = async (options) => {
  */
 module.exports.deleteComment = async (options) => {
   try {
-    const post = await getCollection();
+    const postCollection = await getPostCollection();
     const filter = {_id: new ObjectId(options.postId)};
     const updatingDoc = {
       $pull: {
         comments: {'_id': new ObjectId(options.commentId)}
       }
     }
-    let updateResult = await post.updateOne(filter, updatingDoc);
+    let updateResult = await postCollection.updateOne(filter, updatingDoc);
     return {
       status: 200,
       data: updateResult
@@ -144,7 +140,7 @@ module.exports.deleteComment = async (options) => {
  */
 module.exports.reportPost = async (options) => {
   try {
-    const post = await getCollection();
+    const postCollection = await getPostCollection();
     let report = options.body;
     const filter = {_id: new ObjectId(options.postId)};
     const updatingDoc = {
@@ -154,7 +150,7 @@ module.exports.reportPost = async (options) => {
         })
       }
     }
-    let updateResult = await post.updateOne(filter, updatingDoc);
+    let updateResult = await postCollection.updateOne(filter, updatingDoc);
     return {
       status: 200,
       data: updateResult
@@ -173,7 +169,7 @@ module.exports.reportPost = async (options) => {
  */
 module.exports.reportComment = async (options) => {
   try {
-    const post = await getCollection();
+    const postCollection = await getPostCollection();
     let report = options.body;
     const filter = {_id: new ObjectId(options.postId)};
     const updatingDoc = {
@@ -183,7 +179,7 @@ module.exports.reportComment = async (options) => {
         })
       }
     }
-    let updateResult = await post.updateOne(filter, updatingDoc);
+    let updateResult = await postCollection.updateOne(filter, updatingDoc);
     return {
       status: 200,
       data: updateResult
@@ -201,12 +197,12 @@ module.exports.reportComment = async (options) => {
  */
 module.exports.getPostsByUser = async (options) => {
   try {
-    const postCollection = await getCollection();
-
-    let findCursor = postCollection.find({userId: options.userId});
+    const postCollection = await getPostCollection();
+    let findCursor = postCollection.find({userId: options.userId, status: STATE_ACTIVE});
 
     if (options.includeInteraction) {
       findCursor = postCollection.find({
+        status: STATE_ACTIVE,
         $or: [{userId: options.userId}, {'comments.userId': options.userId}]
       });
     }
@@ -222,5 +218,3 @@ module.exports.getPostsByUser = async (options) => {
     return common.getErrorResponse(500, e);
   }
 };
-
-//fix comment reporting issue

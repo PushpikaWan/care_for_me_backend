@@ -1,4 +1,4 @@
-const dbConfig = require('../db/db-config');
+const {getUserCursor} = require('../db/db-config');
 const common = require('../util/common');
 const {ObjectId} = require("mongodb");
 
@@ -9,9 +9,8 @@ const {ObjectId} = require("mongodb");
  */
 module.exports.saveUser = async (options) => {
   try {
-    let db = await dbConfig.getDB();
-    const user = db.collection('UserData');
-    const inserted = await user.insertOne(
+    const userCursor = await getUserCursor();
+    const inserted = await userCursor.insertOne(
         common.getPreProcessedDataBeforeSave(options.body));
     return {
       status: 200,
@@ -30,8 +29,7 @@ module.exports.saveUser = async (options) => {
  */
 module.exports.editUser = async (options) => {
   try {
-    let db = await dbConfig.getDB();
-    const user = db.collection('UserData');
+    const userCursor = await getUserCursor();
     let body = options.body;
     const filter = {_id: new ObjectId(body.id)};
     const updatingDoc = {
@@ -40,7 +38,7 @@ module.exports.editUser = async (options) => {
         "imageUrl": body.imageUrl
       })
     }
-    let updateResult = await user.updateOne(filter, updatingDoc);
+    let updateResult = await userCursor.updateOne(filter, updatingDoc);
     return {
       status: 200,
       data: updateResult

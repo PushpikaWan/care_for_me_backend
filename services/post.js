@@ -1,5 +1,7 @@
-const dbConfig = require("../db/db-config");
+const {getPostCursor, getPostCollection} = require("../db/db-config");
 const common = require("../util/common");
+const {STATE_ACTIVE} = require("../util/constants");
+
 /**
  * @param {Object} options
  * @throws {Error}
@@ -7,10 +9,9 @@ const common = require("../util/common");
  */
 module.exports.getAllPosts = async (options) => {
   try {
-    let db = await dbConfig.getDB();
-    const posts = await db.collection('Post')
-    .find({}).sort({modifiedAt: -1}).limit(options.pageSize).skip(
-        options.pageSize * options.page).toArray();
+    const postCursor = await getPostCursor();
+    const posts = await postCursor.sort({modifiedAt: -1}).limit(
+        options.pageSize).skip(options.pageSize * options.page).toArray();
     return {
       status: 200,
       data: posts
@@ -27,10 +28,10 @@ module.exports.getAllPosts = async (options) => {
  */
 module.exports.savePost = async (options) => {
   try {
-    let db = await dbConfig.getDB();
-    const post = db.collection('Post');
-    const inserted = await post.insertOne(
-        common.getPreProcessedDataBeforeSave(options.body));
+    const postCollection = await getPostCollection();
+    const post = {...options.body, status: STATE_ACTIVE}
+    const inserted = await postCollection.insertOne(
+        common.getPreProcessedDataBeforeSave(post));
     return {
       status: 200,
       data: inserted
