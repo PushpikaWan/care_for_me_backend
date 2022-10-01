@@ -9,7 +9,8 @@ const router = new express.Router();
  */
 router.get('/', async (req, res, next) => {
   const options = {
-    query: req.query
+    pageSize: req.query['pageSize'],
+    page: req.query['page']
   };
 
   try {

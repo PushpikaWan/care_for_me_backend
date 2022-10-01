@@ -42,3 +42,4 @@ console.debug('Server listening on port: ' + PORT);
 app.use('/user', require('./routes/user'));
 app.use('/post', require('./routes/post'));
 app.use('/posts', require('./routes/posts'));
+app.use('/metadata', require('./routes/metadata'));

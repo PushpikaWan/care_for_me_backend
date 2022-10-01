@@ -128,7 +128,9 @@ router.post('/:postId/comment/:commentId/report', async (req, res, next) => {
 router.get('/user/:userId', async (req, res, next) => {
   const options = {
     userId: req.params['userId'],
-    query: req.query
+    includeInteraction: req.query['includeInteraction'],
+    pageSize: req.query['pageSize'],
+    page: req.query['page']
   };
 
   try {

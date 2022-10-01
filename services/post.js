@@ -8,11 +8,9 @@ const common = require("../util/common");
 module.exports.getAllPosts = async (options) => {
   try {
     let db = await dbConfig.getDB();
-    let query = options.query;
     const posts = await db.collection('Post')
-    .find({}).sort({modifiedAt: -1}).limit(query.pageSize).skip(
-        query.pageSize * query.page).toArray();
-    console.log(posts);
+    .find({}).sort({modifiedAt: -1}).limit(options.pageSize).skip(
+        options.pageSize * options.page).toArray();
     return {
       status: 200,
       data: posts
