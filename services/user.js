@@ -1,5 +1,6 @@
 const dbConfig = require('../db/db-config');
-const error = require('../util/ErrorResponseCreator');
+const common = require('../util/common');
+const {ObjectId} = require("mongodb");
 
 /**
  * @param {Object} options
@@ -10,14 +11,13 @@ module.exports.saveUser = async (options) => {
   try {
     let db = await dbConfig.getDB();
     const user = db.collection('UserData');
-    await user.insertOne(options.body);
-    console.log('users', options.body);
+    await user.insertOne(common.getIdRemovedPayloadForSave(options.body));
     return {
       status: 200,
       data: options.body
     };
   } catch (e) {
-    return error.getErrorResponse(500, e);
+    return common.getErrorResponse(500, e);
   }
 };
 
@@ -28,9 +28,25 @@ module.exports.saveUser = async (options) => {
  * @return {Promise}
  */
 module.exports.editUser = async (options) => {
-  return {
-    status: 200,
-    data: 'editUser ok!'
-  };
+  try {
+    let db = await dbConfig.getDB();
+    const user = db.collection('UserData');
+    let body = options.body;
+    const filter = {_id: new ObjectId(body.id)};
+    const updatedDoc = {
+      $set: {
+        "name": body.name,
+        "imageUrl": body.imageUrl,
+        "modifiedAt": body.modifiedAt
+      }
+    }
+    await user.updateOne(filter, updatedDoc);
+    return {
+      status: 200,
+      data: body
+    };
+  } catch (e) {
+    return common.getErrorResponse(500, e);
+  }
 };
 
