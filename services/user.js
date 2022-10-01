@@ -1,6 +1,5 @@
 const dbConfig = require('../db/db-config');
-const ServerError = require(
-    "swagger-node-codegen/templates/express-server/src/lib/error");
+const error = require('../util/ErrorResponseCreator');
 
 /**
  * @param {Object} options
@@ -8,7 +7,6 @@ const ServerError = require(
  * @return {Promise}
  */
 module.exports.saveUser = async (options) => {
-//todo need common validator to all post, update, delete..
   try {
     let db = await dbConfig.getDB();
     const user = db.collection('UserData');
@@ -19,11 +17,7 @@ module.exports.saveUser = async (options) => {
       data: options.body
     };
   } catch (e) {
-    console.error("user data saving failed", e);
-    throw new ServerError({
-      status: 500,
-      error: e.message()
-    });
+    return error.getErrorResponse(500, e);
   }
 };
 

@@ -2,7 +2,8 @@ const express = require("express"),
     bodyParser = require("body-parser"),
     swaggerUi = require("swagger-ui-express"),
     YAML = require('yamljs'),
-    swaggerDocument = YAML.load('./swagger.yaml');
+    swaggerDocument = YAML.load('./swagger.yaml'),
+    OpenApiValidator = require('express-openapi-validator');
 const PORT = process.env.PORT || 5000;
 const app = express();
 
@@ -12,6 +13,23 @@ app.use(
     })
 );
 app.use(bodyParser.json());
+
+app.use(
+    OpenApiValidator.middleware({
+      apiSpec: './swagger.yaml',
+      validateRequests: true, // (default)
+      validateResponses: false, // false by default
+    }),
+);
+
+app.use((err, req, res, next) => {
+  console.log('herrrrrr', err);
+  // format error
+  res.status(err.status || 500).json({
+    message: err.message,
+    errors: err.errors,
+  });
+});
 
 app.listen(PORT);
 console.debug('Server listening on port: ' + PORT);
@@ -23,5 +41,4 @@ console.debug('Server listening on port: ' + PORT);
 app.use('/user', require('./routes/user'));
 app.use('/post', require('./routes/post'));
 app.use('/posts', require('./routes/posts'));
-app.use('/books', require('./routes/books'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {explorer: true}));
