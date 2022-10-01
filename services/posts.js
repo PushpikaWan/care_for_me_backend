@@ -1,4 +1,4 @@
-const {getPostCursor, getPostCollection} = require("../db/db-config");
+const {getPostCollection} = require("../db/db-config");
 const common = require("../util/common");
 const {ObjectId} = require("mongodb");
 const {STATE_ACTIVE} = require("../util/constants");
@@ -173,13 +173,16 @@ module.exports.reportComment = async (options) => {
     let report = options.body;
     const filter = {_id: new ObjectId(options.postId)};
     const updatingDoc = {
-      $push: {
-        'comments.reports': common.getPreProcessedDataBeforeSave({
+      $push : {
+        'comments.$[comment].reports': common.getPreProcessedDataBeforeSave({
           ...report
         })
       }
     }
-    let updateResult = await postCollection.updateOne(filter, updatingDoc);
+    let updateResult = await postCollection.findOneAndUpdate(filter, updatingDoc, {
+      arrayFilters : [{ 'comment._id' : new ObjectId(options.commentId) }],
+      new          : true
+    });
     return {
       status: 200,
       data: updateResult
