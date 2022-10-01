@@ -1,3 +1,9 @@
+## todo
+- critical
+  - add authorization
+  - add delete and edit calls additional crosscheck with token and user ids
+
+
 # node-js-getting-started
 
 A barebones Node.js app using [Express 4](http://expressjs.com/).
@@ -52,3 +58,4 @@ For more information about using Node.js on Heroku, see these Dev Center article
 ## generate code from swagger
 snc swagger.yaml -o ./care-for-me-apis
 then check new changes and add those into relevant folder in roots and delete whole generated code
+

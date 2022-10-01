@@ -472,6 +472,11 @@ paths:
           schema:
             type: string
         - in: query
+          name: includeInteraction
+          schema:
+            type: boolean
+          description: Whether include user interacted post or not
+        - in: query
           name: pageSize
           schema:
             type: integer

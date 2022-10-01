@@ -204,9 +204,18 @@ module.exports.getPostsByUser = async (options) => {
   try {
     const postCollection = await getCollection();
     let query = options.query;
-    const post = await postCollection
-    .find({userId: new ObjectId(options.userId)}).limit(query.pageSize).skip(
-        query.pageSize * query.page).toArray();
+
+    let findCursor = postCollection.find({userId: options.userId});
+
+    if (query.includeInteraction) {
+      findCursor = postCollection.find({
+        $or: [{userId: options.userId}, {'comments.userId': options.userId}]
+      });
+    }
+
+    const post = await findCursor
+    .sort({modifiedAt: -1})
+    .limit(query.pageSize).skip(query.pageSize * query.page).toArray();
     console.log(post);
     return {
       status: 200,
@@ -216,3 +225,7 @@ module.exports.getPostsByUser = async (options) => {
     return common.getErrorResponse(500, e);
   }
 };
+
+//fix comment reporting issue
+//get count user post and interaction as user details..
+//get user interacted post
