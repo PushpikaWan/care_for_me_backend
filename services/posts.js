@@ -238,4 +238,3 @@ module.exports.getPostsByUser = async (options) => {
     data: 'getPostsByUser ok!'
   };
 };
-
