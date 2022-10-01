@@ -483,7 +483,7 @@ components:
     Post:
       type: "object"
       required:
-        - postId
+        - id
         - imageUrl
         - animalType
         - animalNeed
@@ -494,7 +494,7 @@ components:
         - userId
         - postedAt
       properties:
-        postId:
+        id:
           type: string
         imageUrl:
           type: string
@@ -543,10 +543,13 @@ components:
     Comment:
       type: "object"
       required:
+        - id
         - userId
         - text
         - postedAt
       properties:
+        id:
+          type: string
         userId:
           type: string
         text:
