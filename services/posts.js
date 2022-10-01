@@ -144,27 +144,25 @@ module.exports.deleteComment = async (options) => {
  * @return {Promise}
  */
 module.exports.reportPost = async (options) => {
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
-
-  return {
-    status: 200,
-    data: 'reportPost ok!'
-  };
+  try {
+    const post = await getCollection();
+    let report = options.body;
+    const filter = {_id: new ObjectId(options.postId)};
+    const updatingDoc = {
+      $push: {
+        reports: common.getPreProcessedDataBeforeSave({
+          ...report
+        })
+      }
+    }
+    let updateResult = await post.updateOne(filter, updatingDoc);
+    return {
+      status: 200,
+      data: updateResult
+    };
+  } catch (e) {
+    return common.getErrorResponse(500, e);
+  }
 };
 
 /**
@@ -175,27 +173,25 @@ module.exports.reportPost = async (options) => {
  * @return {Promise}
  */
 module.exports.reportComment = async (options) => {
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
-
-  return {
-    status: 200,
-    data: 'reportComment ok!'
-  };
+  try {
+    const post = await getCollection();
+    let report = options.body;
+    const filter = {_id: new ObjectId(options.postId)};
+    const updatingDoc = {
+      $push: {
+        'comments.reports': common.getPreProcessedDataBeforeSave({
+          ...report
+        })
+      }
+    }
+    let updateResult = await post.updateOne(filter, updatingDoc);
+    return {
+      status: 200,
+      data: updateResult
+    };
+  } catch (e) {
+    return common.getErrorResponse(500, e);
+  }
 };
 
 /**
