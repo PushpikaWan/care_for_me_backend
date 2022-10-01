@@ -34,17 +34,16 @@ module.exports.editUser = async (options) => {
     const user = db.collection('UserData');
     let body = options.body;
     const filter = {_id: new ObjectId(body.id)};
-    const updatedDoc = {
-      $set: {
+    const updatingDoc = {
+      $set: common.getPreProcessedDataBeforeUpdate({
         "name": body.name,
-        "imageUrl": body.imageUrl,
-        "modifiedAt": body.modifiedAt
-      }
+        "imageUrl": body.imageUrl
+      })
     }
-    await user.updateOne(filter, updatedDoc);
+    let updateResult = await user.updateOne(filter, updatingDoc);
     return {
       status: 200,
-      data: body
+      data: updateResult
     };
   } catch (e) {
     return common.getErrorResponse(500, e);

@@ -1,3 +1,12 @@
+const dbConfig = require("../db/db-config");
+const common = require("../util/common");
+const {ObjectId} = require("mongodb");
+
+async function getCollection() {
+  let db = await dbConfig.getDB();
+  return db.collection('Post');
+}
+
 /**
  * @param {Object} options
  * @param {String} options.postId post id
@@ -5,27 +14,18 @@
  * @return {Promise}
  */
 module.exports.getPost = async (options) => {
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
-
-  return {
-    status: 200,
-    data: 'getPost ok!'
-  };
+  try {
+    const postCollection = await getCollection();
+    const post = await postCollection
+    .findOne({_id: new ObjectId(options.postId)});
+    console.log(post);
+    return {
+      status: 200,
+      data: post
+    };
+  } catch (e) {
+    return common.getErrorResponse(500, e);
+  }
 };
 
 /**
@@ -35,27 +35,31 @@ module.exports.getPost = async (options) => {
  * @return {Promise}
  */
 module.exports.updatePost = async (options) => {
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
 
-  return {
-    status: 200,
-    data: 'updatePost ok!'
-  };
+  try {
+    const post = await getCollection();
+    let body = options.body;
+    const filter = {_id: new ObjectId(options.postId)};
+    const updatingDoc = {
+      $set: common.getPreProcessedDataBeforeUpdate({
+        "name": body.name,
+        "imageUrl": body.imageUrl,
+        "animalType": body.animalType,
+        "animalNeed": body.animalNeed,
+        "district": body.district,
+        "addressText": body.addressText,
+        "locationLink": body.locationLink,
+        "description": body.description,
+      })
+    }
+    let updateResult = await post.updateOne(filter, updatingDoc);
+    return {
+      status: 200,
+      data: updateResult
+    };
+  } catch (e) {
+    return common.getErrorResponse(500, e);
+  }
 };
 
 /**
@@ -65,27 +69,18 @@ module.exports.updatePost = async (options) => {
  * @return {Promise}
  */
 module.exports.deletePost = async (options) => {
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
+  try {
+    const post = await getCollection();
+    const filter = {_id: new ObjectId(options.postId)};
 
-  return {
-    status: 200,
-    data: 'deletePost ok!'
-  };
+    let deleteResult = await post.deleteOne(filter);
+    return {
+      status: 200,
+      data: deleteResult
+    };
+  } catch (e) {
+    return common.getErrorResponse(500, e);
+  }
 };
 
 /**
