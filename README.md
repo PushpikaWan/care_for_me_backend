@@ -1,3 +1,9 @@
+## todo
+- critical
+  - add authorization
+  - add delete and edit calls additional crosscheck with token and user ids
+
+
 # node-js-getting-started
 
 A barebones Node.js app using [Express 4](http://expressjs.com/).
@@ -37,3 +43,19 @@ For more information about using Node.js on Heroku, see these Dev Center article
 - [Node.js on Heroku](https://devcenter.heroku.com/categories/nodejs)
 - [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
 - [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
+
+
+## how I configured
+- create BE project in github using this sample
+  - git clone https://github.com/heroku/node-js-getting-started.git
+- open cmd in that project
+  - heroku login
+  - heroku create
+  - git push heroku main
+  - heroku ps:scale web=1     -> to make sure at lease one instance running
+  - heroku open
+
+## generate code from swagger
+snc swagger.yaml -o ./care-for-me-apis
+then check new changes and add those into relevant folder in roots and delete whole generated code
+
