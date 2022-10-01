@@ -471,6 +471,16 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+          description: The number of post per page
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Current page number
 
       responses:
         '200':

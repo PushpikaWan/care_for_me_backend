@@ -201,25 +201,18 @@ module.exports.reportComment = async (options) => {
  * @return {Promise}
  */
 module.exports.getPostsByUser = async (options) => {
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
-
-  return {
-    status: 200,
-    data: 'getPostsByUser ok!'
-  };
+  try {
+    const postCollection = await getCollection();
+    let query = options.query;
+    const post = await postCollection
+    .find({userId: new ObjectId(options.userId)}).limit(query.pageSize).skip(
+        query.pageSize * query.page).toArray();
+    console.log(post);
+    return {
+      status: 200,
+      data: post
+    };
+  } catch (e) {
+    return common.getErrorResponse(500, e);
+  }
 };

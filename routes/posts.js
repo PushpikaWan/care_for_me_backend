@@ -127,7 +127,8 @@ router.post('/:postId/comment/:commentId/report', async (req, res, next) => {
  */
 router.get('/user/:userId', async (req, res, next) => {
   const options = {
-    userId: req.params['userId']
+    userId: req.params['userId'],
+    query: req.query
   };
 
   try {

@@ -10,7 +10,7 @@ module.exports.getAllPosts = async (options) => {
     let db = await dbConfig.getDB();
     let query = options.query;
     const posts = await db.collection('Post')
-    .find({}).sort({modifiedAt: -1}).limit(50).skip(
+    .find({}).sort({modifiedAt: -1}).limit(query.pageSize).skip(
         query.pageSize * query.page).toArray();
     console.log(posts);
     return {
