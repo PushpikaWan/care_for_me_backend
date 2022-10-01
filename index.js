@@ -14,6 +14,8 @@ app.use(
 );
 app.use(bodyParser.json());
 
+//use requested additional routes before validator
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {explorer: true}));
 app.use(
     OpenApiValidator.middleware({
       apiSpec: './swagger.yaml',
@@ -23,7 +25,6 @@ app.use(
 );
 
 app.use((err, req, res, next) => {
-  console.log('herrrrrr', err);
   // format error
   res.status(err.status || 500).json({
     message: err.message,
@@ -41,4 +42,3 @@ console.debug('Server listening on port: ' + PORT);
 app.use('/user', require('./routes/user'));
 app.use('/post', require('./routes/post'));
 app.use('/posts', require('./routes/posts'));
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {explorer: true}));
