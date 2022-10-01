@@ -1,30 +1,25 @@
+const dbConfig = require("../db/db-config");
+const common = require("../util/common");
 /**
  * @param {Object} options
  * @throws {Error}
  * @return {Promise}
  */
 module.exports.getAllPosts = async (options) => {
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
-
-  return {
-    status: 200,
-    data: 'getAllPosts ok!'
-  };
+  try {
+    let db = await dbConfig.getDB();
+    let query = options.query;
+    const posts = await db.collection('Post')
+    .find({}).sort({modifiedAt: -1}).limit(50).skip(
+        query.pageSize * query.page).toArray();
+    console.log(posts);
+    return {
+      status: 200,
+      data: posts
+    };
+  } catch (e) {
+    return common.getErrorResponse(500, e);
+  }
 };
 
 /**
@@ -33,26 +28,17 @@ module.exports.getAllPosts = async (options) => {
  * @return {Promise}
  */
 module.exports.savePost = async (options) => {
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
-
-  return {
-    status: 200,
-    data: 'savePost ok!'
-  };
+  try {
+    let db = await dbConfig.getDB();
+    const post = db.collection('Post');
+    const inserted = await post.insertOne(
+        common.getPreProcessedDataBeforeSave(options.body));
+    return {
+      status: 200,
+      data: inserted
+    };
+  } catch (e) {
+    return common.getErrorResponse(500, e);
+  }
 };
 

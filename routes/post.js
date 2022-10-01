@@ -9,6 +9,7 @@ const router = new express.Router();
  */
 router.get('/', async (req, res, next) => {
   const options = {
+    query: req.query
   };
 
   try {

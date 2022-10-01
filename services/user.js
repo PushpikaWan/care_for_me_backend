@@ -11,10 +11,11 @@ module.exports.saveUser = async (options) => {
   try {
     let db = await dbConfig.getDB();
     const user = db.collection('UserData');
-    await user.insertOne(common.getIdRemovedPayloadForSave(options.body));
+    const inserted = await user.insertOne(
+        common.getPreProcessedDataBeforeSave(options.body));
     return {
       status: 200,
-      data: options.body
+      data: inserted
     };
   } catch (e) {
     return common.getErrorResponse(500, e);

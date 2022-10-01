@@ -87,6 +87,18 @@ paths:
       operationId: getAllPosts
       tags:
         - post
+      parameters:
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+          description: The number of post per page
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Current page number
+
 
       responses:
         '200':
@@ -492,7 +504,7 @@ components:
         - locationLink
         - description
         - userId
-        - postedAt
+        - modifiedAt
       properties:
         id:
           type: string
@@ -506,13 +518,15 @@ components:
           type: string
         addressText:
           type: string
+          maxLength: 200
         locationLink:
           type: string
         description:
           type: string
+          maxLength: 700
         userId:
           type: string
-        postedAt:
+        modifiedAt:
           type: string
         Comments:
           type: "array"
