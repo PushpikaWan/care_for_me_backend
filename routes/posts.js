@@ -7,6 +7,39 @@ const router = new express.Router();
 /**
  *
  */
+router.get('/', async (req, res, next) => {
+  const options = {
+    pageSize: req.query['pageSize'],
+    page: req.query['page']
+  };
+
+  try {
+    const result = await posts.getAllPosts(options);
+    res.status(result.status || 200).send(result.data);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ *
+ */
+router.post('/', async (req, res, next) => {
+  const options = {
+    body: req.body
+  };
+
+  try {
+    const result = await posts.savePost(options);
+    res.status(result.status || 200).send(result.data);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ *
+ */
 router.get('/:postId', async (req, res, next) => {
   const options = {
     postId: req.params['postId']
