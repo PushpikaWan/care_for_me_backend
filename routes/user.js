@@ -21,6 +21,22 @@ router.post('/', async (req, res, next) => {
 });
 
 /**
+ *
+ */
+router.get('/:userId', async (req, res, next) => {
+  const options = {
+    userId: req.params['userId']
+  };
+
+  try {
+    const result = await user.getUser(options);
+    res.status(result.status || 200).send(result.data);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
  * 
  */
 router.put('/:userId', async (req, res, next) => {

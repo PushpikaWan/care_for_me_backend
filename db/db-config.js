@@ -15,7 +15,7 @@ getDB = async () => {
   }
 }
 
-module.exports.getUserCursor = async () => {
+module.exports.getUserCollection = async () => {
   let db = await getDB();
   return db.collection('UserData');
 }
