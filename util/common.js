@@ -13,3 +13,16 @@ module.exports.getPreProcessedDataBeforeUpdate = (payload) => {
   payload = {...payload, 'modifiedAt': new Date()}
   return payload;
 }
+
+module.exports.convertIdBeforeSendingArray = (arrayOfObj) => {
+  return arrayOfObj.map(({_id: id, ...rest}) => ({
+    id, ...rest
+  }));
+
+}
+
+module.exports.convertIdBeforeSendingObject = (Object) => {
+  Object.id = Object._id
+  delete Object._id
+  return Object
+}
