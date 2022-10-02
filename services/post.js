@@ -1,6 +1,7 @@
 const {getPostCursor, getPostCollection} = require("../db/db-config");
 const common = require("../util/common");
 const {STATE_ACTIVE} = require("../util/constants");
+const {convertIdBeforeSendingArray} = require("../util/common");
 
 /**
  * @param {Object} options
@@ -14,7 +15,7 @@ module.exports.getAllPosts = async (options) => {
         options.pageSize).skip(options.pageSize * options.page).toArray();
     return {
       status: 200,
-      data: posts
+      data: convertIdBeforeSendingArray(posts)
     };
   } catch (e) {
     return common.getErrorResponse(500, e);

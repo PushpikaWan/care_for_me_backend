@@ -3,6 +3,9 @@
   - add authorization
   - add delete and edit calls additional crosscheck with token and user ids
 
+- improvement
+  - add mongoose with data models
+
 
 # node-js-getting-started
 
