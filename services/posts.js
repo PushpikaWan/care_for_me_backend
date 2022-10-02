@@ -56,6 +56,12 @@ module.exports.getPost = async (options) => {
     let postCollection = await getPostCollection();
     const post = await postCollection.findOne(
         {_id: new ObjectId(options.postId), 'status': STATE_ACTIVE});
+    if(!post){
+      return {
+        status: 204,
+        data: null
+      };
+    }
     return {
       status: 200,
       data: convertIdBeforeSendingObject(post)

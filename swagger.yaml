@@ -40,6 +40,39 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 
   '/user/{userId}':
+    get:
+      operationId: getUser
+      tags:
+        - user
+      parameters:
+        - name: userId
+          in: path
+          description: user id
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: A successful response with user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+        '204':
+          description: No matching User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
     put:
       operationId: editUser
