@@ -4,7 +4,9 @@
   - add delete and edit calls additional crosscheck with token and user ids
 
 - improvement
-  - add mongoose with data models
+    - API versioning like baseurl/v1/..
+    - Use enum and other practices
+    - add mongoose with data models
 
 
 # node-js-getting-started

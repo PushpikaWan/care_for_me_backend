@@ -4,6 +4,10 @@ const express = require("express"),
     YAML = require('yamljs'),
     swaggerDocument = YAML.load('./swagger.yaml'),
     OpenApiValidator = require('express-openapi-validator');
+
+//firebase init
+require('./authorization/firebase-admin');
+
 const PORT = process.env.PORT || 5000;
 const app = express();
 
