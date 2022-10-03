@@ -1,13 +1,14 @@
 const express = require('express');
 const user = require('../services/user');
+const {authenticateJWT} = require("../authorization/auth-helper");
 
 const router = new express.Router();
 
 
 /**
- * 
+ *
  */
-router.post('/', async (req, res, next) => {
+router.post('/', authenticateJWT, async (req, res, next) => {
   const options = {
     body: req.body
   };
@@ -23,7 +24,7 @@ router.post('/', async (req, res, next) => {
 /**
  *
  */
-router.get('/:userId', async (req, res, next) => {
+router.get('/:userId', authenticateJWT, async (req, res, next) => {
   const options = {
     userId: req.params['userId']
   };
@@ -37,9 +38,9 @@ router.get('/:userId', async (req, res, next) => {
 });
 
 /**
- * 
+ *
  */
-router.put('/:userId', async (req, res, next) => {
+router.put('/:userId', authenticateJWT, async (req, res, next) => {
   const options = {
     body: req.body,
     userId: req.params['userId']
