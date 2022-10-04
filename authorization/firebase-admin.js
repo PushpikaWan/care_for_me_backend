@@ -3,7 +3,7 @@ const admin = require("firebase-admin");
 const serviceAccount = {
   "type": "service_account",
   "project_id": process.env.PROJECT_ID,
-  "private_key_id": process.env.PRIVATE_KEY_ID,
+  "private_key_id": process.env.PRIVATE_KEY_ID.replace(/\\n/g, '\n'),
   "private_key": process.env.PRIVATE_KEY,
   "client_email": process.env.CLIENT_EMAIL_ADDRESS,
   "client_id": process.env.CLIENT_ID,
