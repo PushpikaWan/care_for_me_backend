@@ -1,10 +1,12 @@
 const admin = require("firebase-admin");
 
+const privateKeyWithLabel = JSON.parse(process.env.PRIVATE_KEY_WITH_LABEL);
+
 const serviceAccount = {
   "type": "service_account",
   "project_id": process.env.PROJECT_ID,
   "private_key_id": process.env.PRIVATE_KEY_ID,
-  "private_key": process.env.PRIVATE_KEY.replace(/\n/gm, "\n"),
+  privateKeyWithLabel,
   "client_email": process.env.CLIENT_EMAIL_ADDRESS,
   "client_id": process.env.CLIENT_ID,
   "auth_uri": process.env.AUTH_URI,
