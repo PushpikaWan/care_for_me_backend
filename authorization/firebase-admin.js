@@ -4,7 +4,8 @@ const serviceAccount = `{
   "type": "service_account",
   "project_id": ${process.env.PROJECT_ID},
   "private_key_id": ${process.env.PRIVATE_KEY_ID},
-  "private_key": ${JSON.stringify(process.env.PRIVATE_KEY.replace(/\\n/g, '\n'))},
+  "private_key": ${JSON.stringify(
+    process.env.PRIVATE_KEY.replace(/\\n/g, '\n'))},
   "client_email": ${process.env.CLIENT_EMAIL_ADDRESS},
   "client_id": ${process.env.CLIENT_ID},
   "auth_uri": ${process.env.AUTH_URI},
@@ -14,6 +15,10 @@ const serviceAccount = `{
 }`;
 
 admin.initializeApp({
-  credential: admin.credential.cert(JSON.parse(serviceAccount))
+  credential: admin.credential.cert({
+    projectId: process.env.PROJECT_ID,
+    privateKey: JSON.stringify(process.env.PRIVATE_KEY),
+    clientEmail: process.env.CLIENT_EMAIL_ADDRESS
+  })
 });
 
