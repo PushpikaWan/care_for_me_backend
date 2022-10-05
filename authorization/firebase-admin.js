@@ -14,7 +14,5 @@ const serviceAccount = {
 };
 
 admin.initializeApp({
-  credential: admin.credential.cert(
-      JSON.parse(Buffer.from(serviceAccount, 'base64').toString('utf8')))
-});
+  credential: admin.credential.cert(JSON.parse(JSON.stringify(serviceAccount)))});
 
