@@ -12,12 +12,21 @@ const {convertIdBeforeSendingObject} = require("../util/common");
 module.exports.saveUser = async (options) => {
   try {
     const userCollection = await getUserCollection();
+    let countDocuments = await userCollection.countDocuments(
+        {googleId: options.body.googleId},
+        {limit: 1});
+
+    if (countDocuments > 0) {
+      return this.editUser(options);
+    }
     const user = {...options.body, status: STATE_ACTIVE};
-    const inserted = await userCollection.insertOne(
+    const response = await userCollection.insertOne(
         common.getPreProcessedDataBeforeSave(user));
+
+    const insertedUser = await this.getUser({userId: response.insertedId})
     return {
-      status: 200,
-      data: inserted
+      status: 201,
+      data: insertedUser.data
     };
   } catch (e) {
     return common.getErrorResponse(500, e);
@@ -36,7 +45,7 @@ module.exports.getUser = async (options) => {
     const userCollection = await getUserCollection();
     const user = await userCollection.findOne(
         {_id: new ObjectId(options.userId), 'status': STATE_ACTIVE});
-    if(!user){
+    if (!user) {
       return {
         status: 204,
         data: null
@@ -68,10 +77,11 @@ module.exports.editUser = async (options) => {
         "imageUrl": body.imageUrl
       })
     }
-    let updateResult = await userCollection.updateOne(filter, updatingDoc);
+    let updateResult = await userCollection.findOneAndUpdate(filter,
+        updatingDoc, {returnDocument: "after"});
     return {
-      status: 200,
-      data: updateResult
+      status: 201,
+      data: updateResult.value
     };
   } catch (e) {
     return common.getErrorResponse(500, e);

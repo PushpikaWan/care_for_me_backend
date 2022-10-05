@@ -64,3 +64,5 @@ For more information about using Node.js on Heroku, see these Dev Center article
 - snc swagger.yaml -o ./care-for-me-apis
 - then check new changes and add those into relevant folder in roots and delete whole generated code
 
+## auth with firebase admin sdk
+- https://www.tonyvu.co/posts/jwt-authentication-node-js
