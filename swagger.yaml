@@ -659,12 +659,18 @@ components:
       required:
         - id
         - userId
+        - userName
+        - userImageUrl
         - text
         - postedAt
       properties:
         id:
           type: string
         userId:
+          type: string
+        userName:
+          type: string
+        userImageUrl:
           type: string
         text:
           type: string
