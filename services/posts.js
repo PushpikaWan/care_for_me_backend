@@ -4,6 +4,7 @@ const {ObjectId} = require("mongodb");
 const {STATE_ACTIVE} = require("../util/constants");
 const {convertIdBeforeSendingArray, convertIdBeforeSendingObject} = require(
     "../util/common");
+const {uploadImage} = require("./external/external");
 
 /**
  * @param {Object} options
@@ -32,7 +33,13 @@ module.exports.getAllPosts = async (options) => {
 module.exports.savePost = async (options) => {
   try {
     const postCollection = await getPostCollection();
-    const post = {...options.body, status: STATE_ACTIVE}
+    const uploadedImageUrl = await uploadImage(options.body.imageUrl);
+
+    const post = {
+      ...options.body,
+      imageUrl: uploadedImageUrl,
+      status: STATE_ACTIVE
+    }
     const inserted = await postCollection.insertOne(
         common.getPreProcessedDataBeforeSave(post));
     return {
@@ -43,7 +50,6 @@ module.exports.savePost = async (options) => {
     return common.getErrorResponse(500, e);
   }
 };
-
 
 /**
  * @param {Object} options
@@ -56,7 +62,7 @@ module.exports.getPost = async (options) => {
     let postCollection = await getPostCollection();
     const post = await postCollection.findOne(
         {_id: new ObjectId(options.postId), 'status': STATE_ACTIVE});
-    if(!post){
+    if (!post) {
       return {
         status: 204,
         data: null

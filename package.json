@@ -11,11 +11,13 @@
     "test": "node test.js"
   },
   "dependencies": {
+    "axios": "^1.0.0",
     "body-parser": "^1.20.0",
     "ejs": "^3.1.5",
     "express": "^4.15.2",
     "express-openapi-validator": "^4.13.8",
     "firebase-admin": "^11.0.1",
+    "form-data": "^4.0.0",
     "mongodb": "^4.10.0",
     "swagger-jsdoc": "^6.2.5",
     "swagger-node-codegen": "^1.6.3",
