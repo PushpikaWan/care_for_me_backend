@@ -9,6 +9,7 @@ module.exports.authenticateJWT = async (req, res, next) => {
     .auth()
     .verifyIdToken(idToken)
     .then(function (decodedToken) {
+      console.log('uid check ----', decodedToken.uid);
       return next();
     })
     .catch(function (error) {

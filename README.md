@@ -1,6 +1,5 @@
 ## todo
 - critical
-  - add authorization
   - add delete and edit calls additional crosscheck with token and user ids
 
 - improvement

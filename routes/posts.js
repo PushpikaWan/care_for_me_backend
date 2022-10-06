@@ -1,12 +1,13 @@
 const express = require('express');
 const posts = require('../services/posts');
+const {authenticateJWT} = require("../authorization/auth-helper");
 
 const router = new express.Router();
-
 
 /**
  *
  */
+//only keep this without authorization to access from public services
 router.get('/', async (req, res, next) => {
   const options = {
     pageSize: req.query['pageSize'],
@@ -24,7 +25,7 @@ router.get('/', async (req, res, next) => {
 /**
  *
  */
-router.post('/', async (req, res, next) => {
+router.post('/', authenticateJWT, async (req, res, next) => {
   const options = {
     body: req.body
   };
@@ -40,7 +41,7 @@ router.post('/', async (req, res, next) => {
 /**
  *
  */
-router.get('/:postId', async (req, res, next) => {
+router.get('/:postId', authenticateJWT, async (req, res, next) => {
   const options = {
     postId: req.params['postId']
   };
@@ -56,7 +57,7 @@ router.get('/:postId', async (req, res, next) => {
 /**
  *
  */
-router.put('/:postId', async (req, res, next) => {
+router.put('/:postId', authenticateJWT, async (req, res, next) => {
   const options = {
     body: req.body,
     postId: req.params['postId']
@@ -73,7 +74,7 @@ router.put('/:postId', async (req, res, next) => {
 /**
  *
  */
-router.delete('/:postId', async (req, res, next) => {
+router.delete('/:postId', authenticateJWT, async (req, res, next) => {
   const options = {
     postId: req.params['postId']
   };
@@ -89,7 +90,7 @@ router.delete('/:postId', async (req, res, next) => {
 /**
  *
  */
-router.post('/:postId/comment', async (req, res, next) => {
+router.post('/:postId/comment', authenticateJWT, async (req, res, next) => {
   const options = {
     body: req.body,
     postId: req.params['postId']
@@ -106,7 +107,7 @@ router.post('/:postId/comment', async (req, res, next) => {
 /**
  *
  */
-router.delete('/:postId/comment/:commentId', async (req, res, next) => {
+router.delete('/:postId/comment/:commentId', authenticateJWT, async (req, res, next) => {
   const options = {
     postId: req.params['postId'],
     commentId: req.params['commentId']
@@ -123,7 +124,7 @@ router.delete('/:postId/comment/:commentId', async (req, res, next) => {
 /**
  *
  */
-router.post('/:postId/report', async (req, res, next) => {
+router.post('/:postId/report', authenticateJWT, async (req, res, next) => {
   const options = {
     body: req.body,
     postId: req.params['postId']
@@ -140,7 +141,7 @@ router.post('/:postId/report', async (req, res, next) => {
 /**
  *
  */
-router.post('/:postId/comment/:commentId/report', async (req, res, next) => {
+router.post('/:postId/comment/:commentId/report', authenticateJWT, async (req, res, next) => {
   const options = {
     body: req.body,
     postId: req.params['postId'],
@@ -158,7 +159,7 @@ router.post('/:postId/comment/:commentId/report', async (req, res, next) => {
 /**
  *
  */
-router.get('/user/:userId', async (req, res, next) => {
+router.get('/user/:userId', authenticateJWT, async (req, res, next) => {
   const options = {
     userId: req.params['userId'],
     includeInteraction: req.query['includeInteraction'],
