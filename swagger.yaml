@@ -583,6 +583,7 @@ components:
       type: "object"
       required:
         - id
+        - userLite
         - imageUrl
         - animalType
         - animalNeed
@@ -590,11 +591,14 @@ components:
         - addressText
         - locationLink
         - description
-        - userId
         - modifiedAt
+        - comments
+        - reports
       properties:
         id:
           type: string
+        userLite:
+          $ref: '#/components/schemas/UserLite'
         imageUrl:
           type: string
         animalType:
@@ -611,13 +615,11 @@ components:
         description:
           type: string
           maxLength: 700
-        userId:
-          type: string
         modifiedAt:
           type: string
         status:
           type: string
-        Comments:
+        comments:
           type: "array"
           items:
             $ref: "#/components/schemas/Comment"
@@ -654,24 +656,32 @@ components:
         status:
           type: string
 
-    Comment:
+    UserLite:
       type: "object"
       required:
-        - id
         - userId
         - userName
         - userImageUrl
-        - text
-        - postedAt
       properties:
-        id:
-          type: string
         userId:
           type: string
         userName:
           type: string
         userImageUrl:
           type: string
+
+    Comment:
+      type: "object"
+      required:
+        - id
+        - userLite
+        - text
+        - postedAt
+      properties:
+        id:
+          type: string
+        userLite:
+          $ref: '#/components/schemas/UserLite'
         text:
           type: string
         postedAt:
