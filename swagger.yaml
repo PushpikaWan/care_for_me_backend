@@ -677,6 +677,7 @@ components:
         - userLite
         - text
         - postedAt
+        - reports
       properties:
         id:
           type: string
