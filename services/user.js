@@ -17,7 +17,7 @@ module.exports.saveUser = async (options) => {
         {limit: 1});
 
     if (countDocuments > 0) {
-      return this.editUser(options);
+      return await editUserByGoogleId(options);
     }
     const user = {...options.body, status: STATE_ACTIVE};
     const response = await userCollection.insertOne(
@@ -88,3 +88,31 @@ module.exports.editUser = async (options) => {
   }
 };
 
+/**
+ * Do not expose this to external parties...
+ * @param {Object} options
+ * @param {String} options.userId user id
+ * @throws {Error}
+ * @return {Promise}
+ */
+editUserByGoogleId = async (options) => {
+  try {
+    const userCollection = await getUserCollection();
+    let body = options.body;
+    const filter = {googleId: body.googleId};
+    const updatingDoc = {
+      $set: common.getPreProcessedDataBeforeUpdate({
+        "name": body.name,
+        "imageUrl": body.imageUrl
+      })
+    }
+    let updateResult = await userCollection.findOneAndUpdate(filter,
+        updatingDoc, {returnDocument: "after"});
+    return {
+      status: 201,
+      data: updateResult.value
+    };
+  } catch (e) {
+    return common.getErrorResponse(500, e);
+  }
+};
