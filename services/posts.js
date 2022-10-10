@@ -107,7 +107,7 @@ module.exports.updatePost = async (options) => {
         updatingDoc, {returnDocument: "after"});
     return {
       status: 200,
-      data: updateResult.value
+      data: convertIdBeforeSendingObject(updateResult.value)
     };
   } catch (e) {
     return common.getErrorResponse(500, e);
@@ -158,7 +158,7 @@ module.exports.addComment = async (options) => {
         updatingDoc, {returnDocument: "after"});
     return {
       status: 200,
-      data: updateResult.value
+      data: convertIdBeforeSendingObject(updateResult.value)
     };
   } catch (e) {
     return common.getErrorResponse(500, e);
@@ -184,7 +184,7 @@ module.exports.deleteComment = async (options) => {
         updatingDoc, {returnDocument: "after"});
     return {
       status: 200,
-      data: updateResult.value
+      data: convertIdBeforeSendingObject(updateResult.value)
     };
   } catch (e) {
     return common.getErrorResponse(500, e);
@@ -213,7 +213,7 @@ module.exports.reportPost = async (options) => {
         updatingDoc, {returnDocument: "after"});
     return {
       status: 200,
-      data: updateResult.value
+      data: convertIdBeforeSendingObject(updateResult.value)
     };
   } catch (e) {
     return common.getErrorResponse(500, e);
@@ -247,7 +247,7 @@ module.exports.reportComment = async (options) => {
         });
     return {
       status: 200,
-      data: updateResult.value
+      data: convertIdBeforeSendingObject(updateResult.value)
     };
   } catch (e) {
     return common.getErrorResponse(500, e);

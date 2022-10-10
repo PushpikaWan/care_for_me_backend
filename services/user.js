@@ -26,7 +26,7 @@ module.exports.saveUser = async (options) => {
     const insertedUser = await this.getUser({userId: response.insertedId})
     return {
       status: 201,
-      data: insertedUser.data
+      data: convertIdBeforeSendingObject(insertedUser.data)
     };
   } catch (e) {
     return common.getErrorResponse(500, e);
@@ -81,7 +81,7 @@ module.exports.editUser = async (options) => {
         updatingDoc, {returnDocument: "after"});
     return {
       status: 201,
-      data: updateResult.value
+      data: convertIdBeforeSendingObject(updateResult.value)
     };
   } catch (e) {
     return common.getErrorResponse(500, e);
@@ -110,7 +110,7 @@ editUserByGoogleId = async (options) => {
         updatingDoc, {returnDocument: "after"});
     return {
       status: 201,
-      data: updateResult.value
+      data: convertIdBeforeSendingObject(updateResult.value)
     };
   } catch (e) {
     return common.getErrorResponse(500, e);
