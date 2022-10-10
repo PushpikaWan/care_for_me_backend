@@ -591,6 +591,7 @@ components:
         - addressText
         - locationLink
         - description
+        - createdAt
         - modifiedAt
         - comments
         - reports
@@ -615,6 +616,8 @@ components:
         description:
           type: string
           maxLength: 700
+        createdAt:
+          type: string
         modifiedAt:
           type: string
         status:

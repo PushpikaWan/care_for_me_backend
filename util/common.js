@@ -5,6 +5,7 @@ module.exports.getErrorResponse = (status, errorMessage) => {
 
 module.exports.getPreProcessedDataBeforeSave = (payload) => {
   delete payload.id;
+  delete payload.createdAt;
   return this.getPreProcessedDataBeforeUpdate(payload);
 }
 

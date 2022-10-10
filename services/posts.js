@@ -41,7 +41,10 @@ module.exports.savePost = async (options) => {
       status: STATE_ACTIVE
     }
     const inserted = await postCollection.insertOne(
-        common.getPreProcessedDataBeforeSave(post));
+        {
+          ...common.getPreProcessedDataBeforeSave(post),
+          'createdAt': new Date()
+        });
     return {
       status: 200,
       data: inserted
