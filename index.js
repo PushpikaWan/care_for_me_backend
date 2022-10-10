@@ -17,7 +17,7 @@ app.use(
       limit: '20mb'
     })
 );
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '20mb'}));
 
 //use requested additional routes before validator
 app.use('/api-docs', swaggerUi.serve,
