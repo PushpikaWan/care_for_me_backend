@@ -14,12 +14,14 @@ const app = express();
 app.use(
     bodyParser.urlencoded({
       extended: true,
+      limit: '20mb'
     })
 );
 app.use(bodyParser.json());
 
 //use requested additional routes before validator
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {explorer: true}));
+app.use('/api-docs', swaggerUi.serve,
+    swaggerUi.setup(swaggerDocument, {explorer: true}));
 app.use(
     OpenApiValidator.middleware({
       apiSpec: './swagger.yaml',
@@ -38,7 +40,6 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT);
 console.debug('Server listening on port: ' + PORT);
-
 
 /*
  * Routes
