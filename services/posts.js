@@ -94,9 +94,9 @@ module.exports.updatePost = async (options) => {
     const filter = {_id: new ObjectId(options.postId)};
     const updatingDoc = {
       $set: common.getPreProcessedDataBeforeUpdate({
-        "imageUrl": body.imageUrl,
-        "animalType": body.animalType,
-        "animalNeed": body.animalNeed,
+        // "imageUrl": body.imageUrl,
+        // "animalType": body.animalType,
+        // "animalNeed": body.animalNeed,
         "district": body.district,
         "addressText": body.addressText,
         "locationLink": body.locationLink,
@@ -209,9 +209,10 @@ module.exports.reportPost = async (options) => {
     const filter = {_id: new ObjectId(options.postId)};
     const updatingDoc = {
       $push: {
-        reports: common.getPreProcessedDataBeforeSave({
-          ...report
-        })
+        reports: {
+          ...report,
+          'reportedAt': new Date()
+        }
       }
     }
     let updateResult = await postCollection.findOneAndUpdate(filter,
