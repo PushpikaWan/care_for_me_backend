@@ -1,7 +1,7 @@
 const {getPostCollection, getPostCursor} = require("../db/db-config");
 const common = require("../util/common");
 const {ObjectId} = require("mongodb");
-const {STATE_ACTIVE} = require("../util/constants");
+const {STATE_ACTIVE, STATE_DELETE} = require("../util/constants");
 const {convertIdBeforeSendingArray, convertIdBeforeSendingObject} = require(
     "../util/common");
 const {uploadImage} = require("./external/external");
@@ -122,13 +122,18 @@ module.exports.updatePost = async (options) => {
  */
 module.exports.deletePost = async (options) => {
   try {
-    const postCollection = await getPostCollection();
+    let postCollection = await getPostCollection();
     const filter = {_id: new ObjectId(options.postId)};
-
-    let deleteResult = await postCollection.deleteOne(filter);
+    const updatingDoc = {
+      $set: common.getPreProcessedDataBeforeUpdate({
+        "status": STATE_DELETE,
+      })
+    }
+    let updateResult = await postCollection.findOneAndUpdate(filter,
+        updatingDoc, {returnDocument: "after"});
     return {
       status: 200,
-      data: deleteResult
+      data: convertIdBeforeSendingObject(updateResult.value)
     };
   } catch (e) {
     return common.getErrorResponse(500, e);
