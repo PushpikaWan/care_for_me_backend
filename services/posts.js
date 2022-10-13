@@ -153,10 +153,11 @@ module.exports.addComment = async (options) => {
     const filter = {_id: new ObjectId(options.postId)};
     const updatingDoc = {
       $push: {
-        comments: common.getPreProcessedDataBeforeSave({
+        comments: {
           ...comment,
-          _id: new ObjectId()
-        })
+          'id': new ObjectId(),
+          'postedAt': new Date()
+        }
       }
     }
     let updateResult = await postCollection.findOneAndUpdate(filter,
