@@ -183,7 +183,7 @@ module.exports.deleteComment = async (options) => {
     const filter = {_id: new ObjectId(options.postId)};
     const updatingDoc = {
       $pull: {
-        comments: {'_id': new ObjectId(options.commentId)}
+        comments: {'id': new ObjectId(options.commentId)}
       }
     }
     let updateResult = await postCollection.findOneAndUpdate(filter,
@@ -248,7 +248,7 @@ module.exports.reportComment = async (options) => {
     }
     let updateResult = await postCollection.findOneAndUpdate(filter,
         updatingDoc, {
-          arrayFilters: [{'comment._id': new ObjectId(options.commentId)}],
+          arrayFilters: [{'comment.id': new ObjectId(options.commentId)}],
           new: true,
           returnDocument: "after"
         });
