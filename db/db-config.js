@@ -3,10 +3,14 @@ const MongoClient = require("mongodb").MongoClient;
 
 const connectionString = process.env.MONGODB_URI;
 const dbName = 'CARE_FOR_ME_DEV';
+let mongoClient = null;
 
 getDB = async () => {
   try {
-    const mongoClient = await MongoClient.connect(connectionString);
+    if (mongoClient != null) {
+      return mongoClient.db(dbName);
+    }
+    mongoClient = await MongoClient.connect(connectionString);
     console.log('Connected to Database');
     return mongoClient.db(dbName);
   } catch (e) {
