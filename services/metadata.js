@@ -14,7 +14,12 @@ module.exports.getUserPostMetaData = async (options) => {
     const ownedPostCount = await postCollection.countDocuments(
         {'userLite.userId': options.userId, status: STATE_ACTIVE});
     const interactedPostCount = await postCollection.countDocuments(
-        {'comments.userLite.userId': options.userId, status: STATE_ACTIVE});
+        {
+          status: STATE_ACTIVE,
+          $or: [{'userLite.userId': options.userId},
+            {'comments.userLite.userId': options.userId}]
+        }
+    );
     return {
       status: 200,
       data: {ownedPostCount, interactedPostCount}
