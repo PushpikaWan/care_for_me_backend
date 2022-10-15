@@ -271,12 +271,12 @@ module.exports.getPostsByUser = async (options) => {
   try {
     const postCollection = await getPostCollection();
     let findCursor = postCollection.find(
-        {userId: options.userId, status: STATE_ACTIVE});
+        {'userLite.userId': options.userId, status: STATE_ACTIVE});
 
     if (options.includeInteraction) {
       findCursor = postCollection.find({
         status: STATE_ACTIVE,
-        $or: [{userId: options.userId}, {'comments.userId': options.userId}]
+        $or: [{'userLite.userId': options.userId}, {'comments.userLite.userId': options.userId}]
       });
     }
 
