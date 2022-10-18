@@ -3,7 +3,8 @@ const express = require("express"),
     swaggerUi = require("swagger-ui-express"),
     YAML = require('yamljs'),
     swaggerDocument = YAML.load('./swagger.yaml'),
-    OpenApiValidator = require('express-openapi-validator');
+    OpenApiValidator = require('express-openapi-validator'),
+    path = require('path');
 
 //firebase init
 require('./authorization/firebase-admin');
@@ -18,6 +19,14 @@ app.use(
     })
 );
 app.use(bodyParser.json({limit: '20mb'}));
+
+//express we serve up production assets like our main.js and main.css files
+app.use(express.static('client/build'));
+
+// express will serve up the index.html file if id doesn't recognize the route
+app.get("/care", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+})
 
 //use requested additional routes before validator
 app.use('/api-docs', swaggerUi.serve,
