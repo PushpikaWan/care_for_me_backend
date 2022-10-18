@@ -7,7 +7,7 @@ const router = new express.Router();
 /**
  *
  */
-//only keep this without authorization to access from public services
+//only keep this without authorization to access from public services - todo only allow within localhost
 router.get('/', async (req, res, next) => {
   const options = {
     pageSize: req.query['pageSize'],
@@ -41,7 +41,8 @@ router.post('/', authenticateJWT, async (req, res, next) => {
 /**
  *
  */
-router.get('/:postId', authenticateJWT, async (req, res, next) => {
+//only keep this without authorization to access from public services - todo only allow within localhost
+router.get('/:postId', async (req, res, next) => {
   const options = {
     postId: req.params['postId']
   };
