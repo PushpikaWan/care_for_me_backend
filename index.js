@@ -9,6 +9,8 @@ const express = require("express"),
 
 //firebase init
 require('./authorization/firebase-admin');
+const posts = require("./services/posts");
+const common = require("./util/common");
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -22,11 +24,25 @@ app.use(
 app.use(bodyParser.json({limit: '20mb'}));
 
 const pathToIndex = path.join(__dirname, "client/build/index.html")
-app.get("/care", (req, res) => {
-  const raw = fs.readFileSync(pathToIndex,  'utf8');
-  const pageTitle = "Homepage - Welcome to my page"
-  const updated = raw.replace("__PAGE_META__", `<title>${pageTitle}</title>`)
-  res.send(updated)
+app.get("/care/:postId", async (req, res) => {
+  try{
+    const options = {
+      postId: req.params['postId']
+    };
+    const result = await posts.getPost(options);
+    const post = result.data;
+
+    const raw = fs.readFileSync(pathToIndex, 'utf8');
+    const pageTitle = "Care for Me"
+    const updated = raw.replace("__PAGE_META__", `<title>${pageTitle}</title>
+    <meta name="description" content= "${post.description}"/>
+    <meta name="og:title" content="${post.animalNeed} - ${post.district}"/>
+    <meta name="og:description" content="${post.description}"/>
+    <meta name="og:image" content= "${post.imageUrl}"/>`)
+    res.send(updated)
+  } catch (ex){
+    return common.getErrorResponse(500, ex);
+  }
 })
 
 app.use(express.static(path.join(__dirname, "client/build")))
