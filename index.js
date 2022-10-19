@@ -4,7 +4,8 @@ const express = require("express"),
     YAML = require('yamljs'),
     swaggerDocument = YAML.load('./swagger.yaml'),
     OpenApiValidator = require('express-openapi-validator'),
-    path = require('path');
+    path = require('path'),
+    fs = require("fs");
 
 //firebase init
 require('./authorization/firebase-admin');
@@ -20,13 +21,18 @@ app.use(
 );
 app.use(bodyParser.json({limit: '20mb'}));
 
-//express we serve up production assets like our main.js and main.css files
-app.use(express.static('client/build'));
-
-// express will serve up the index.html file if id doesn't recognize the route
+const pathToIndex = path.join(__dirname, "client/build/index.html")
 app.get("/care", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  const raw = fs.readFileSync(pathToIndex,  'utf8');
+  const pageTitle = "Homepage - Welcome to my page"
+  const updated = raw.replace("__PAGE_META__", `<title>${pageTitle}</title>`)
+  res.send(updated)
 })
+
+app.use(express.static(path.join(__dirname, "client/build")))
+// app.get("", (req, res) =>
+//     res.sendFile(path.join(__dirname, "client/build/index.html"))
+// )
 
 //use requested additional routes before validator
 app.use('/api-docs', swaggerUi.serve,
