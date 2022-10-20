@@ -6,5 +6,5 @@ export interface Comment{
   userLite: UserLite,
   text: string,
   postedAt: string,
-  reports: Report
+  reports: Report[]
 }

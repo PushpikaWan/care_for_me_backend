@@ -15,7 +15,6 @@ $commentTextSize: 15px;
 
 .post-main-container {
   width: 500px;
-  max-height: 90vh;
   max-width: 95vw;
 }
 
@@ -88,10 +87,12 @@ $commentTextSize: 15px;
 .card-content-comment {
   display: flex;
   flex-direction: row;
+  padding: 5px 0;
 }
 
 .comment-header-user-meta {
   padding-left: 10px;
+  width: 100%;
 }
 
 .comment-text {
@@ -99,12 +100,11 @@ $commentTextSize: 15px;
   color: $postCommentTextColor;
   font-size: $commentTextSize;
   border-radius: 15px;
-  padding: 7px 10px;
+  padding: 3px 10px;
 }
 
 .comment-header-user-meta-name {
   color: $postUserNameColor;
-  width: 100%;
   font-weight: 450;
   font-size: $commentUserNameTextSize;
 }
@@ -112,4 +112,21 @@ $commentTextSize: 15px;
 .comment-header-user-meta-time {
   color: $postedTimeColor;
   font-size: $commentTimeTextSize;
+}
+
+.location-header{
+  padding-top: 5px;
+  width: 100%;
+  text-align: center;
+  color: $postTopicColor;
+  font-size: $postTopicTextSize;
+  font-weight: 500;
+}
+
+.location-content{
+  padding-top: 2px;
+  width: 100%;
+  text-align: center;
+  color: $postDescriptionColor;
+  font-size: $postDescriptionTextSize;
 }

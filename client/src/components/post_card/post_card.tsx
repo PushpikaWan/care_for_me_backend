@@ -16,9 +16,11 @@ import {Post} from "../../models/Post";
 import {Comment} from "../../models/Comment";
 import {getAnimalNeedLabel, getTimeText} from "../../utils/helpers";
 
+enum AdditionType { none, comment, location }
+
 type PostCardProps = { post: Post }
 export default function PostCard({post}: PostCardProps) {
-  const [showComment, setShowComment] = useState<boolean>(true);
+  const [additionalType, setAdditionalType] = useState<AdditionType>(AdditionType.none);
 
   const renderComments = (comments: Comment[]) => {
     return (
@@ -39,6 +41,19 @@ export default function PostCard({post}: PostCardProps) {
               </div>
           );
         })
+    );
+  }
+
+  const renderLocation = (address: string) => {
+    return (
+        <div>
+          <div className="location-header">
+            Address
+          </div>
+          <div className="location-content">
+            {address}
+          </div>
+        </div>
     );
   }
 
@@ -66,11 +81,12 @@ export default function PostCard({post}: PostCardProps) {
             </div>
             <div className="content-header-actions">
               <IconButton aria-label="add to favorites"
-                          onClick={() => setShowComment(!showComment)}>
+                          onClick={() => setAdditionalType(additionalType !== AdditionType.none ? AdditionType.none : AdditionType.comment)}>
                 <CommentIcon sx={{color: primaryColor}}/>
               </IconButton>
               <IconButton aria-label="share">
-                <LocationOnIcon sx={{color: secondaryColor}}/>
+                <LocationOnIcon sx={{color: secondaryColor}}
+                                onClick={() => setAdditionalType(additionalType !== AdditionType.none ? AdditionType.none : AdditionType.location)}/>
               </IconButton>
             </div>
           </div>
@@ -82,7 +98,8 @@ export default function PostCard({post}: PostCardProps) {
             {post.description}
           </div>
           <div className="card-content-additional-info-container">
-            {showComment ? renderComments(post.comments) : null}
+            {additionalType === AdditionType.comment ? renderComments(post.comments) :
+                (additionalType == AdditionType.location ? renderLocation(post.addressText) : null)}
           </div>
         </CardContent>
 
