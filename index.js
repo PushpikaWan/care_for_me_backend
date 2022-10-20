@@ -25,7 +25,7 @@ app.use(bodyParser.json({limit: '20mb'}));
 
 const pathToIndex = path.join(__dirname, "client/build/index.html")
 app.get("/care/:postId", async (req, res) => {
-  try{
+  try {
     const options = {
       postId: req.params['postId']
     };
@@ -40,8 +40,8 @@ app.get("/care/:postId", async (req, res) => {
     <meta name="og:description" content="${post.description}"/>
     <meta name="og:image" content= "${post.imageUrl}"/>`)
     res.send(updated)
-  } catch (ex){
-    return common.getErrorResponse(500, ex);
+  } catch (ex) {
+    return res.status(500);
   }
 })
 
