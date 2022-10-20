@@ -14,6 +14,7 @@ import CardContent from "@mui/material/CardContent";
 import {primaryColor, secondaryColor} from "../../utils/constants";
 import {Post} from "../../models/Post";
 import {Comment} from "../../models/Comment";
+import {getAnimalNeedLabel, getTimeText} from "../../utils/helpers";
 
 type PostCardProps = { post: Post }
 export default function PostCard({post}: PostCardProps) {
@@ -31,7 +32,8 @@ export default function PostCard({post}: PostCardProps) {
                 </div>
                 <div className="comment-header-user-meta">
                   <div className="comment-header-user-meta-name"> {comment.userLite.userName} <span
-                      className="comment-header-user-meta-time"> {comment.postedAt} </span></div>
+                      className="comment-header-user-meta-time"> {getTimeText(comment.postedAt, true)} </span>
+                  </div>
                   <div className="comment-text">{comment.text}</div>
                 </div>
               </div>
@@ -57,7 +59,9 @@ export default function PostCard({post}: PostCardProps) {
               </div>
               <div className="content-header-user-meta">
                 <div className="content-header-user-meta-name"> {post.userLite.userName}</div>
-                <div className="content-header-user-meta-time"> {post.createdAt} ago</div>
+                <div
+                    className="content-header-user-meta-time"> {getTimeText(post.createdAt, false)} ago
+                </div>
               </div>
             </div>
             <div className="content-header-actions">
@@ -72,7 +76,7 @@ export default function PostCard({post}: PostCardProps) {
           </div>
           <Divider className="card-content-divider"/>
           <div className="card-content-sub-title">
-            {post.animalNeed} - {post.district}
+            {getAnimalNeedLabel(post.animalNeed)} - {post.district}
           </div>
           <div className="card-content-description">
             {post.description}

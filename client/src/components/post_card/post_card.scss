@@ -15,6 +15,8 @@ $commentTextSize: 15px;
 
 .post-main-container {
   width: 500px;
+  max-height: 90vh;
+  max-width: 95vw;
 }
 
 .post-image-container {
@@ -80,6 +82,7 @@ $commentTextSize: 15px;
 
 .card-content-additional-info-container {
   padding-top: 20px;
+  overflow-y: scroll;
 }
 
 .card-content-comment {
@@ -101,6 +104,7 @@ $commentTextSize: 15px;
 
 .comment-header-user-meta-name {
   color: $postUserNameColor;
+  width: 100%;
   font-weight: 450;
   font-size: $commentUserNameTextSize;
 }
