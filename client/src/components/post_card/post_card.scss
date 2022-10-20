@@ -1,0 +1,111 @@
+$postUserNameColor: #454545;
+$postedTimeColor: #909090;
+$postTopicColor: #000000;
+$postDescriptionColor: #434343;
+$postCommentBackgroundColor: #EDEDED;
+$postCommentTextColor: #555555;
+
+$postMainUserNameTextSize: 20px;
+$postMainUserTimeTextSize: 13px;
+$postTopicTextSize: 18px;
+$postDescriptionTextSize: 15px;
+$commentUserNameTextSize: 17px;
+$commentTimeTextSize: 13px;
+$commentTextSize: 15px;
+
+.post-main-container {
+  width: 500px;
+}
+
+.post-image-container {
+
+}
+
+.content-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.content-header-user-data {
+  display: flex;
+  flex: 0.6;
+}
+
+.content-header-user-image {
+
+}
+
+.content-header-user-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding-left: 20px;
+}
+
+.content-header-user-meta-name {
+  color: $postUserNameColor;
+  font-weight: 400;
+  font-size: $postMainUserNameTextSize;
+}
+
+.content-header-user-meta-time {
+  color: $postedTimeColor;
+  font-size: $postMainUserTimeTextSize;
+}
+
+.content-header-actions {
+  display: flex;
+  flex: 0.4;
+  align-items: end;
+  justify-content: end;
+}
+
+.card-content-divider {
+  padding-top: 10px;
+}
+
+.card-content-sub-title {
+  padding-top: 10px;
+  color: $postTopicColor;
+  font-size: $postTopicTextSize;
+  font-weight: 500;
+}
+
+.card-content-description {
+  padding-top: 3px;
+  color: $postDescriptionColor;
+  font-size: $postDescriptionTextSize;
+}
+
+.card-content-additional-info-container {
+  padding-top: 20px;
+}
+
+.card-content-comment {
+  display: flex;
+  flex-direction: row;
+}
+
+.comment-header-user-meta {
+  padding-left: 10px;
+}
+
+.comment-text {
+  background-color: $postCommentBackgroundColor;
+  color: $postCommentTextColor;
+  font-size: $commentTextSize;
+  border-radius: 15px;
+  padding: 7px 10px;
+}
+
+.comment-header-user-meta-name {
+  color: $postUserNameColor;
+  font-weight: 450;
+  font-size: $commentUserNameTextSize;
+}
+
+.comment-header-user-meta-time {
+  color: $postedTimeColor;
+  font-size: $commentTimeTextSize;
+}

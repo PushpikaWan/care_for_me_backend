@@ -1,5 +1,5 @@
 export interface Report {
-  reason: String,
-  reportedByUserId: String,
-  reportedAt: String
+  reason: string,
+  reportedByUserId: string,
+  reportedAt: string
 }

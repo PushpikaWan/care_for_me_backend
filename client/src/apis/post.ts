@@ -1,7 +1,7 @@
 import {createGetRequest} from './common';
 import {Post} from "../models/Post";
 
-const BASE_URL = 'http://localhost:5000'; //todo change this if we change params
+const BASE_URL = 'https://gentle-atoll-98590.herokuapp.com/'; //todo change this if we change params
 
 export async function getAllPosts(): Promise<Post[]> {
   let url = `${BASE_URL}/posts?pageSize=20&page=0`;

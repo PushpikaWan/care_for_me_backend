@@ -2,9 +2,9 @@ import {UserLite} from "./UserLite";
 import {Report} from "./Report";
 
 export interface Comment{
-  id: String,
+  id: string,
   userLite: UserLite,
-  text: String,
-  postedAt: String,
+  text: string,
+  postedAt: string,
   reports: Report
 }

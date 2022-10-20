@@ -19,3 +19,39 @@ $page-background-color: #fafafa;
   padding: 0 1%;
   overflow: scroll;
 }
+
+/* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
+@media (min-width: 320px) {
+  /* use default view */
+}
+
+/* smartphones, Android phones, landscape iPhone */
+@media only screen and (min-width: 480px) {
+}
+
+/* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+@media (min-width: 600px) {
+  .post-page-container {
+    width: 50%;
+    height: 90%;
+  }
+}
+/* tablet, landscape iPad, lo-res laptops ands desktops */
+@media (min-width: 801px) {
+}
+
+/* big landscape tablets, laptops, and desktops */
+@media (min-width: 1025px) {
+}
+
+/* hi-res laptops and desktops */
+@media (min-width: 1281px) {
+}
+
+/* all landscape modes - mobile devices below 1025px */
+@media (max-width: 1025px) and (orientation: landscape) {
+  .post-page-container {
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -5,7 +5,7 @@ function AppRouter() {
   return (
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<PostPage/>}/>
+          <Route path="/:postId" element={<PostPage/>}/>
         </Routes>
       </BrowserRouter>
   );
