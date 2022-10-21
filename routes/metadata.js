@@ -21,4 +21,19 @@ router.get('/user/:userId/posts', authenticateJWT, async (req, res, next) => {
   }
 });
 
+/**
+ *
+ */
+router.get('/application', async (req, res, next) => {
+  const options = {
+  };
+
+  try {
+    const result = await metadata.getApplicationMetaData(options);
+    res.status(result.status || 200).send(result.data);
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

@@ -29,3 +29,15 @@ module.exports.getUserPostMetaData = async (options) => {
   }
 };
 
+/**
+ * @param {Object} options
+ * @throws {Error}
+ * @return {Promise}
+ */
+module.exports.getApplicationMetaData = async (options) => {
+  return {
+    status: 200,
+    data: {appVersion: process.env.MOBILE_APP_VERSION}
+  };
+};
+
