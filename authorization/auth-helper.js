@@ -5,6 +5,7 @@ module.exports.authenticateJWT = async (req, res, next) => {
 
   if (authHeader) {
     const idToken = authHeader.split(" ")[1];
+    console.log('token', idToken);
     admin
     .auth()
     .verifyIdToken(idToken)

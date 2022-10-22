@@ -36,7 +36,8 @@ app.get("/care/:postId", async (req, res) => {
     const pageTitle = "Care for Me"
     const updated = raw.replace("__PAGE_META__", `<title>${pageTitle}</title>
     <meta name="description" content= "${post.description}"/>
-    <meta name="og:title" content="${post.animalNeed} - ${post.district}"/>
+    <meta name="og:title" content="${common.getAnimalNeedLabel(
+        post.animalNeed)} - ${post.district}"/>
     <meta name="og:description" content="${post.description}"/>
     <meta name="og:image" content= "${post.imageUrl}"/>`)
     res.send(updated)

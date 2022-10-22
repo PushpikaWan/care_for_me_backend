@@ -1,3 +1,9 @@
+import {
+  animalNeedAdopt,
+  animalNeedFeed,
+  animalNeedHeal, animalNeedLost
+} from "../client/src/utils/constants";
+
 module.exports.getErrorResponse = (status, errorMessage) => {
   console.error(status, errorMessage);
   throw Error(`${status} : ${errorMessage}`);
@@ -26,4 +32,19 @@ module.exports.convertIdBeforeSendingObject = (Object) => {
   Object.id = Object._id
   delete Object._id
   return Object
+}
+
+module.exports.getAnimalNeedLabel = (labelText) => {
+  switch (labelText) {
+    case animalNeedAdopt:
+      return '#adopt_me';
+    case animalNeedHeal:
+      return '#heal_me';
+    case animalNeedFeed:
+      return '#feed_me';
+    case animalNeedLost:
+      return '#find_me';
+    default:
+      return '#care';
+  }
 }

@@ -84,7 +84,7 @@ export default function PostCard({post}: PostCardProps) {
                           onClick={() => setAdditionalType(additionalType !== AdditionType.none ? AdditionType.none : AdditionType.comment)}>
                 <CommentIcon sx={{color: primaryColor}}/>
               </IconButton>
-              <IconButton aria-label="share">
+              <IconButton aria-label="location">
                 <LocationOnIcon sx={{color: secondaryColor}}
                                 onClick={() => setAdditionalType(additionalType !== AdditionType.none ? AdditionType.none : AdditionType.location)}/>
               </IconButton>
